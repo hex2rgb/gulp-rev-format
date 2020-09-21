@@ -1,8 +1,9 @@
 'use strict'
-var PluginError = require('plugin-error');
+var PluginError = require('plugin-error')
 var modifyFilename = require('modify-filename')
 var objectAssign = require('object-assign')
 var through = require('through2')
+var uuid = require('uuid').v5
 
 var defaults = {
   prefix: '-',
@@ -38,6 +39,9 @@ module.exports = function (opts) {
 
     // Write the new file path
     file.path = modifyFilename(file.revOrigPath, function (filename, extension) {
+      if (opts.uglyName) {
+        filename = uuid(filename).replace(/-/g, '').substring(5, 10)
+      }
       if (opts.lastExt) {
         return filename + hash + extension
       } else {
