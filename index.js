@@ -3,7 +3,7 @@ var PluginError = require('plugin-error')
 var modifyFilename = require('modify-filename')
 var objectAssign = require('object-assign')
 var through = require('through2')
-var uuid = require('uuid').v5
+var uuid = require('uuid').v4
 
 var defaults = {
   prefix: '-',
@@ -40,7 +40,7 @@ module.exports = function (opts) {
     // Write the new file path
     file.path = modifyFilename(file.revOrigPath, function (filename, extension) {
       if (opts.uglyName) {
-        filename = uuid(filename).replace(/-/g, '').substring(5, 10)
+        filename = uuid(filename).replace(/-/g, '').substring(0, 6)
       }
       if (opts.lastExt) {
         return filename + hash + extension
